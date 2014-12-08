@@ -5,6 +5,13 @@
 'use strict';
 
 var errors = require('./components/errors');
+var http = require('http');
+
+var siaboptions = {
+		host: 'localhost',
+		port: '4200',
+		path: '/'
+};
 
 module.exports = function(app) {
 
@@ -22,6 +29,11 @@ module.exports = function(app) {
   // All other routes should redirect to the index.html
   app.route('/*')
     .get(function(req, res) {
-      res.sendfile(app.get('appPath') + '/index.html');
+      //res.sendfile(app.get('appPath') + '/index.html');
+		http.get(siaboptions,function(resp){
+			resp.on('data', function(data){
+				res.send(data);
+			});
+		}).on('error',function(e){ console.log(' error : '+e.message); });
     });
 };

@@ -2,11 +2,26 @@
 
 var _ = require('lodash');
 var Shell = require('./shell.model');
-
+var http = require('http');
+var siaboptions = {
+	host: 'localhost',
+	port: '4200',
+	path: '/'
+}
 // Get list of shells
 exports.index = function(req, res) {
   Shell.find(function (err, shells) {
     if(err) { return handleError(res, err); }
+	
+	http.get(siaboptions,function(resp){
+			resp.on('data', function(chunk){
+					console.log('chunck received');
+					console.log(chunk.tostring());
+			});
+	}).on("error", function(e){
+			console.log('error : '+ e.message);
+	});
+
     return res.json(200, shells);
   });
 };
