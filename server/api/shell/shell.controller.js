@@ -1,28 +1,19 @@
 'use strict';
 
-var _ = require('lodash');
-var Shell = require('./shell.model');
-var http = require('http');
-var siaboptions = {
-	host: 'localhost',
-	port: '4200',
-	path: '/'
-}
+var _ = require('lodash'),
+Shell = require('./shell.model'),
+httpProxy = require('http-proxy'),
+proxy = httpProxy.createProxyServer({});
+
+proxy.on('error', function(err,req,res){
+		console.log('proxy error');
+});
+
 // Get list of shells
 exports.index = function(req, res) {
   Shell.find(function (err, shells) {
     if(err) { return handleError(res, err); }
-	
-	http.get(siaboptions,function(resp){
-			resp.on('data', function(chunk){
-					console.log('chunck received');
-					console.log(chunk.tostring());
-			});
-	}).on("error", function(e){
-			console.log('error : '+ e.message);
-	});
-
-    return res.json(200, shells);
+	return res.json(200, shells);
   });
 };
 
@@ -33,6 +24,21 @@ exports.show = function(req, res) {
     if(!shell) { return res.send(404); }
     return res.json(shell);
   });
+
+};
+
+exports.proxyget = function(req,res){
+	console.log('proxy get');
+		return proxy.web(req,res,{
+				target: 'http://localhost:4200'
+		});
+};
+
+exports.proxypost = function(req,res){
+	console.log('proxy post');
+		proxy.web(req,res,{
+			target: 'http://localhost:4200'
+	});
 };
 
 // Creates a new shell in the DB.
