@@ -2,7 +2,7 @@
 
 angular.module('shellControlCenterApp')
   .controller('MainCtrl', function ($scope, $http) {
-    $scope.awesomeThings = [];
+    $scope.shells = [];
 
     $http.get('/api/shells').success(function(shells) {
       $scope.shells = shells;
