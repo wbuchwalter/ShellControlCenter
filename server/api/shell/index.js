@@ -8,10 +8,10 @@ var router = express.Router();
 
 router.get('/',auth.isAuthenticated(), controller.index);
 //router.get('/:id', controller.show);
-router.get('/:id/*', auth.isAuthenticated(), controller.proxyget);
+router.get('/:id/*', controller.proxyget);
 
 router.post('/', controller.create);
-router.post('/:id/*', auth.isAuthenticated(), controller.proxypost);
+router.post('/:id/*', controller.proxypost);
 
 //router.put('/:id', controller.update);
 

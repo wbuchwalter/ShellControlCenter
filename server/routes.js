@@ -6,22 +6,21 @@
 
 var errors = require('./components/errors');
 var http = require('http');
-
-var siaboptions = {
-		host: 'localhost',
-		port: '4200',
-		path: '/'
-};
-
+var shell =  require('./api/shell/shell.controller.js')
 module.exports = function(app) {
 
   // Insert routes below
   app.use('/api/shells', require('./api/shell'));
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
-
+ 
   app.use('/auth', require('./auth'));
-  
+ 
+  app.route('/shell?').post(function(req,res){
+		  console.log('Intercepted POST');
+		  shell.proxypost(req,res);
+		  
+		  });
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);

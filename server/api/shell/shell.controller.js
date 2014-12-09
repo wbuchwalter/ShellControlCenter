@@ -28,15 +28,19 @@ exports.show = function(req, res) {
 };
 
 exports.proxyget = function(req,res){
-	console.log('proxy get');
-		return proxy.web(req,res,{
+	console.log('proxy get, ignored');
+	res.send(200);
+/*	return proxy.web(req,res,{
 				target: 'http://localhost:4200'
-		});
+	});*/
+
+
+
 };
 
 exports.proxypost = function(req,res){
 	console.log('proxy post');
-		proxy.web(req,res,{
+		 proxy.web(req,res,{
 			target: 'http://localhost:4200'
 	});
 };

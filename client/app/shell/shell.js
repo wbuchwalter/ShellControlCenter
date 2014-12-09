@@ -5,7 +5,12 @@ angular.module('shellControlCenterApp')
     $stateProvider
       .state('shell', {
         url: '/shell',
-        templateUrl: 'app/shell/shell.html',
-        controller: 'ShellCtrl'
+		views:{
+			'': { templateUrl: 'app/shell/shell.html',
+					controller: 'ShellCtrl'
+			},
+			'proxy@shell': { templateUrl: 'app/shell/shellProxy/proxy-partial.html',
+							controller: 'ShellProxyCtrl'}
+		}
       });
-  });
+});
